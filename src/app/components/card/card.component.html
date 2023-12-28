@@ -1,0 +1,15 @@
+<div class="card-wrapper">
+  <mat-card class="card">
+    <mat-card-content>
+      <span>
+        {{cardConfig.task}}
+      </span>
+      <button mat-icon-button
+              color="primary"
+              (click)="onEditTask()">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </mat-card-content>
+    <mat-card-footer>Assigned to: <span class="card-assignee-name">{{cardConfig.assignedTo}}</span></mat-card-footer>
+  </mat-card>
+</div>

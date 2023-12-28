@@ -1,0 +1,78 @@
+<div class="dashboard-wrapper">
+  <div class="dashboard">
+    <div class="task-list-container">
+      <h3>To do</h3>
+      <div cdkDropList
+           #todo="cdkDropList"
+           [cdkDropListData]="toDoList"
+           [cdkDropListConnectedTo]="[inProgress, inReview, done]"
+           (cdkDropListDropped)="drop($event)"
+           class="task-list">
+        <div *ngFor="let item of toDoList"
+             cdkDrag>
+          <app-card [cardConfig]="item"
+                    (editTask)="editTask($event)">
+          </app-card>
+        </div>
+      </div>
+    </div>
+    <div class="task-list-container">
+      <h3>In progress</h3>
+      <div cdkDropList
+           #inProgress="cdkDropList"
+           [cdkDropListData]="inProgressList"
+           [cdkDropListConnectedTo]="[todo, inReview, done]"
+           (cdkDropListDropped)="drop($event)"
+           class="task-list">
+        <div class="example-box"
+             *ngFor="let item of inProgressList"
+             cdkDrag>
+          <app-card [cardConfig]="item"
+                    (editTask)="editTask($event)">
+          </app-card>
+        </div>
+      </div>
+    </div>
+    <div class="task-list-container">
+      <h3>In review</h3>
+      <div cdkDropList
+           #inReview="cdkDropList"
+           [cdkDropListData]="inReviewList"
+           [cdkDropListConnectedTo]="[todo, inProgress, done]"
+           (cdkDropListDropped)="drop($event)"
+           class="task-list">
+        <div *ngFor="let item of inReviewList"
+             cdkDrag>
+          <app-card [cardConfig]="item"
+                    (editTask)="editTask($event)">
+          </app-card>
+        </div>
+      </div>
+    </div>
+    <div class="task-list-container">
+      <h3>Done</h3>
+      <div cdkDropList
+           #done="cdkDropList"
+           [cdkDropListData]="doneList"
+           [cdkDropListConnectedTo]="[todo, inProgress, inReview]"
+           (cdkDropListDropped)="drop($event)"
+           class="task-list">
+        <div *ngFor="let item of doneList"
+             cdkDrag>
+          <app-card [cardConfig]="item"
+                    (editTask)="editTask($event)">
+          </app-card>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <button mat-raised-button
+              color="primary"
+              (click)="openTaskForm()">
+        <mat-icon>add_circle_outline</mat-icon>
+        Add Task
+      </button>
+    </div>
+
+  </div>
