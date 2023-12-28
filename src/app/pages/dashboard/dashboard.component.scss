@@ -1,21 +1,27 @@
 .dashboard {
   display: flex;
   gap: 16px;
+  width: 100%;
+  height: 80vh;
 
   &-wrapper {
     display: flex;
     justify-content: space-between;
-    padding: 24px;
+    padding: 24px 36px;
+  }
+
+  .task-list-container {
+    flex: 1;
   }
 
   .task-list {
-    border: 1px solid;
     border-radius: 8px;
     padding: 16px;
-    padding-top: 0px;
+    background-color: lightgray;
     display: flex;
     flex-direction: column;
     gap: 16px;
+    height: 70vh;
   }
 }
 

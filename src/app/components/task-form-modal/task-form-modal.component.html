@@ -3,27 +3,36 @@
 <div mat-dialog-content>
   <form [formGroup]="taskForm"
         (ngSubmit)="onSubmit()">
-    <mat-form-field>
-      <input matInput
-             placeholder="Task"
-             formControlName="task">
-      <mat-error *ngIf="taskForm.get('task')?.invalid && taskForm.get('task')?.touched">
-        Task is required.
-      </mat-error>
-    </mat-form-field>
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Task</mat-label>
+        <input matInput
+               placeholder="Title"
+               formControlName="task">
+        <mat-error *ngIf="taskForm.get('task')?.invalid && taskForm.get('task')?.touched">
+          Task is required.
+        </mat-error>
+      </mat-form-field>
+    </p>
 
-    <mat-form-field>
-      <input matInput
-             placeholder="Assigned To"
-             formControlName="assignedTo">
-      <mat-error *ngIf="taskForm.get('assignedTo')?.invalid && taskForm.get('assignedTo')?.touched">
-        Assigned To is required.
-      </mat-error>
-    </mat-form-field>
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Assigned To</mat-label>
+        <input matInput
+               placeholder="Name"
+               formControlName="assignedTo">
+        <mat-error *ngIf="taskForm.get('assignedTo')?.invalid && taskForm.get('assignedTo')?.touched">
+          Assigned To is required.
+        </mat-error>
+      </mat-form-field>
+    </p>
+
+
   </form>
 </div>
 
-<div mat-dialog-actions>
+<div mat-dialog-actions
+     align="end">
   <button mat-button
           (click)="onCancelClick()">
     Cancel

@@ -16,10 +16,10 @@ export class ApiService {
   }
 
   createTask(body: Task) {
-    return this.http.post(`${this.apiUrl}/task.json`, body);
+    return this.http.post<{ name: string }>(`${this.apiUrl}/task.json`, body);
   }
 
   updateTask(body: Task) {
-    return this.http.patch(`${this.apiUrl}/task/${body.id}`, body);
+    return this.http.patch(`${this.apiUrl}/task/${body.id}.json`, body);
   }
 }
