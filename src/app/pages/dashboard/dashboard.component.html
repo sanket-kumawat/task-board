@@ -11,7 +11,8 @@
         <div *ngFor="let item of toDoList"
              cdkDrag>
           <app-card [cardConfig]="item"
-                    (editTask)="editTask($event)">
+                    (editTask)="editTask($event)"
+                    (deleteTask)="deleteTask($event)">
           </app-card>
         </div>
       </div>
@@ -28,7 +29,8 @@
              *ngFor="let item of inProgressList"
              cdkDrag>
           <app-card [cardConfig]="item"
-                    (editTask)="editTask($event)">
+                    (editTask)="editTask($event)"
+                    (deleteTask)="deleteTask($event)">
           </app-card>
         </div>
       </div>
@@ -44,7 +46,8 @@
         <div *ngFor="let item of inReviewList"
              cdkDrag>
           <app-card [cardConfig]="item"
-                    (editTask)="editTask($event)">
+                    (editTask)="editTask($event)"
+                    (deleteTask)="deleteTask($event)">
           </app-card>
         </div>
       </div>
@@ -60,7 +63,8 @@
         <div *ngFor="let item of doneList"
              cdkDrag>
           <app-card [cardConfig]="item"
-                    (editTask)="editTask($event)">
+                    (editTask)="editTask($event)"
+                    (deleteTask)="deleteTask($event)">
           </app-card>
         </div>
       </div>
@@ -74,5 +78,21 @@
         Add Task
       </button>
     </div>
-
   </div>
+</div>
+
+<ng-template #deleteConfirmationTemplate>
+  <div>
+    <h2 mat-dialog-title>Delete Confirmation</h2>
+    <mat-dialog-content>
+      Are you sure you want to delete this task?
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button
+              (click)="deleteDialogRef.close(false)">Cancel</button>
+      <button mat-button
+              color="warn"
+              (click)="deleteDialogRef.close(true)">Delete</button>
+    </mat-dialog-actions>
+  </div>
+</ng-template>

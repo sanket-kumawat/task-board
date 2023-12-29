@@ -15,6 +15,7 @@ export class CardComponent implements OnInit {
   };
 
   @Output() editTask: EventEmitter<Task> = new EventEmitter();
+  @Output() deleteTask: EventEmitter<Task> = new EventEmitter();
 
   constructor() {}
 
@@ -22,5 +23,9 @@ export class CardComponent implements OnInit {
 
   onEditTask() {
     this.editTask.emit(this.cardConfig);
+  }
+
+  onDeleteTask() {
+    this.deleteTask.emit(this.cardConfig);
   }
 }

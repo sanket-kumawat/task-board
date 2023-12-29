@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   CdkDragDrop,
@@ -9,6 +9,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { CardModule } from '../../components/card/card.module';
 import { taskStatus } from '../../constants/taskStatus';
 import { Task } from '../../types/task';
@@ -25,12 +26,17 @@ import { map } from 'rxjs';
     DragDropModule,
     MatButtonModule,
     MatIconModule,
+    MatDialogModule,
     CardModule,
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
+  @ViewChild('deleteConfirmationTemplate', { static: true })
+  deleteConfirmationTemplateRef!: TemplateRef<any>;
+  deleteDialogRef!: MatDialogRef<any>;
+
   toDoList: Task[] = [];
   inProgressList: Task[] = [];
   inReviewList: Task[] = [];
@@ -107,6 +113,24 @@ export class DashboardComponent implements OnInit {
     this.openTaskForm($event);
   }
 
+  deleteTask($event: Task) {
+    this.deleteDialogRef = this.dialog.open(
+      this.deleteConfirmationTemplateRef,
+      {
+        width: '350px',
+      }
+    );
+
+    this.deleteDialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.apiService.deleteTask($event).subscribe((response) => {
+          this.getTaskList();
+          this.openSnackBar('Task deleted successfully');
+        });
+      }
+    });
+  }
+
   openTaskForm(data?: Task) {
     let dialogConfig: {
       data?: Task;
@@ -136,8 +160,8 @@ export class DashboardComponent implements OnInit {
 
   openSnackBar(message: string) {
     this._snackBar.open(message, 'Dismiss', {
-      horizontalPosition: 'end',
-      verticalPosition: 'top',
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
       duration: 3000,
     });
   }

@@ -22,4 +22,8 @@ export class ApiService {
   updateTask(body: Task) {
     return this.http.patch(`${this.apiUrl}/task/${body.id}.json`, body);
   }
+
+  deleteTask(body: Task) {
+    return this.http.delete(`${this.apiUrl}/task/${body.id}.json`);
+  }
 }
