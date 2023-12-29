@@ -15,8 +15,8 @@ import { taskStatus } from '../../constants/taskStatus';
 import { Task } from '../../types/task';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskFormModalComponent } from '../../components/task-form-modal/task-form-modal.component';
-import { ApiService } from '../../services/api.service';
 import { map } from 'rxjs';
+import { TasksService } from '../../services/tasks.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -46,8 +46,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    private apiService: ApiService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private tasksService: TasksService
   ) {}
 
   ngOnInit(): void {
@@ -55,22 +55,15 @@ export class DashboardComponent implements OnInit {
   }
 
   getTaskList() {
-    this.apiService
-      .getTaskList()
+    this.tasksService
+      .getAll()
+      .snapshotChanges()
       .pipe(
-        map((responseData) => {
-          const taskArray = [];
-          for (const key in responseData) {
-            if (responseData.hasOwnProperty(key)) {
-              taskArray.push({ ...responseData[key], id: key });
-            }
-          }
-          return taskArray;
-        })
+        map((changes) =>
+          changes.map((c) => ({ ...c.payload.val(), id: c.payload.key }))
+        )
       )
-      .subscribe((response) => {
-        this.filterTaskList(response);
-      });
+      .subscribe((value) => this.filterTaskList(value as Task[]));
   }
 
   drop(event: CdkDragDrop<Task[]>) {
@@ -91,7 +84,7 @@ export class DashboardComponent implements OnInit {
         event.previousIndex,
         event.currentIndex
       );
-      this.apiService.updateTask(movedTask).subscribe((response) => {
+      this.tasksService.update(movedTask.id, movedTask).then(() => {
         this.openSnackBar('Task status updated successfully');
       });
     }
@@ -109,7 +102,6 @@ export class DashboardComponent implements OnInit {
   }
 
   editTask($event: Task) {
-    console.log($event);
     this.openTaskForm($event);
   }
 
@@ -121,12 +113,11 @@ export class DashboardComponent implements OnInit {
       }
     );
 
-    this.deleteDialogRef.afterClosed().subscribe((result) => {
+    this.deleteDialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
-        this.apiService.deleteTask($event).subscribe((response) => {
-          this.getTaskList();
-          this.openSnackBar('Task deleted successfully');
-        });
+        this.tasksService
+          .delete($event.id)
+          .then(() => this.openSnackBar('Task deleted successfully'));
       }
     });
   }
@@ -145,14 +136,13 @@ export class DashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         if (result.id === '') {
-          this.apiService.createTask(result).subscribe((response) => {
+          this.tasksService.create(result).then((response: any) => {
             this.openSnackBar('Task created successfully');
-            this.toDoList.push({ ...result, id: response.name });
           });
         } else {
-          this.apiService
-            .updateTask(result)
-            .subscribe((response) => console.log(response));
+          this.tasksService
+            .update(result.id, result)
+            .then(() => this.openSnackBar('Task updated successfully'));
         }
       }
     });

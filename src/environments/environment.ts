@@ -1,9 +1,15 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
+// replace firebaseConfig with your own firebase realtime database project firebaseConfig
 
 export const environment = {
   production: false,
-  apiUrl:
-    'https://board-47c5e-default-rtdb.asia-southeast1.firebasedatabase.app',
+  firebaseConfig: {
+    apiKey: 'apiKey',
+    authDomain: 'authDomain',
+    databaseURL: 'databaseURL',
+    projectId: 'projectId',
+    storageBucket: 'storageBucket',
+    messagingSenderId: 'messagingSenderId',
+    appId: 'messagingSenderId',
+    measurementId: 'measurementId',
+  },
 };

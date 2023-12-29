@@ -46,7 +46,7 @@ export class TaskFormModalComponent implements OnInit {
       id: [''],
       task: ['', Validators.required],
       assignedTo: ['', Validators.required],
-      status: ['1'],
+      status: ['0'],
     });
 
     if (this.data) {
